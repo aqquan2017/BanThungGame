@@ -26,11 +26,15 @@ public class Player : MonoBehaviour {
 
     void Update () {
 		if (Input.GetMouseButtonDown(0)) {
+
 			RaycastHit hit;
 			SoundManager.Instance.PlayAudio(SoundManager.Instance.shotSound);
 
 			if (Physics.Raycast (transform.position, transform.forward, out hit)) {
+
 				if (hit.transform.GetComponent<BeerCan> () != null) {
+					GameController.Instance.playerScore++;
+
 					hit.transform.GetComponent<BeerCan> ().OnHit (700, transform.forward);
 					SoundManager.Instance.PlayAudio(SoundManager.Instance.hitSound);
 				}
@@ -41,5 +45,5 @@ public class Player : MonoBehaviour {
     private void Start()
     {
 		Cursor.lockState = CursorLockMode.Locked;
-    }
+	}
 }

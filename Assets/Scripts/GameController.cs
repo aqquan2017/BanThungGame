@@ -5,77 +5,67 @@ using System.Collections;
 public class GameController : MonoBehaviour {
 
 	public TextMesh infoText;
-	public BeerCan[] beerCans;
+    public static GameController Instance; 
 
-	private float recordPoint;
-
-	[SerializeField] private float timeGame = 20f;
+	public float timeGame = 20f;
+    public int playerScore = 0;
+    public int recordScore = 0;
 
     private void Start()
     {
-        if (!PlayerPrefs.HasKey("Record"))
+        if(Instance == null)
+            Instance = this;
+        else
         {
-			PlayerPrefs.SetFloat("Record", 0f);
+            Destroy(gameObject);
         }
 
-		recordPoint = PlayerPrefs.GetFloat("Record");
+        if (!PlayerPrefs.HasKey("Record"))
+        {
+			PlayerPrefs.SetInt("Record", 0);
+        }
+
+        recordScore = PlayerPrefs.GetInt("Record");
     }
 
 
     [ContextMenu("RESET POINT")]
 	public void ResetRecord()
     {
-		PlayerPrefs.SetFloat("Record", 0f);
+		PlayerPrefs.SetInt("Record", 0);
 	}
 
 	void Update () {
 		GameLogic();
 	}
 
+    public System.Action playerAction;
+
 	void GameLogic()
     {
-		bool won = true;
-		foreach (BeerCan can in beerCans)
-		{
-			if (can.wasHit == false)
-			{
-				won = false;
-				break;
-			}
-		}
+        timeGame -= Time.deltaTime;
 
-		if (won == false && timeGame > 0f)
-		{
-			timeGame -= Time.deltaTime;
-			infoText.text = "Bắn tất cả chai bia!\nThời gian còn lại: " + Mathf.Floor(timeGame);
-		}
-		else
-		{
+        if(timeGame <= 0f)
+        {
+            if(playerScore > recordScore)
+            {
+                PlayerPrefs.SetInt("Record", playerScore);
+            }
 
-			if (won)
-			{
-				if (timeGame > recordPoint)
-				{
-					recordPoint = timeGame;
-					PlayerPrefs.SetFloat("Record", recordPoint);
-				}
-
-				infoText.text = "Bạn thắng ! Thời gian chơi: " + System.Math.Round(timeGame, 2) + "s\n"
-					+ "Kỷ lục hiện tại : " + System.Math.Round(recordPoint, 2)
-					+ "\n Nhấn 'Space' để chơi lại !";
-
-			}
-			else
-			{
-				infoText.text = "Bạn thua ! Nhấn 'Space' để chơi lại\n"
-					+ "Kỷ lục hiện tại : " + System.Math.Round(recordPoint, 2);
-			}
+            infoText.text = "KET THUC GAME, DIEM SO CUA BAN LA: " + playerScore
+                + "\n KY LUC: " + PlayerPrefs.GetInt("Record")
+                + "\n AN SPACE DE CHOI LAI";
 
 
-			if (Input.GetKeyDown(KeyCode.Space))
-			{
-				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-			}
-		}
-	}
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+        }
+        else
+        {
+            int timescore = (int)timeGame;
+            infoText.text = "THOI GIAN : " + timescore;
+        }
+    }
 }

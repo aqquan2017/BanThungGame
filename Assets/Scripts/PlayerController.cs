@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player : MonoBehaviour {
+public class PlayerController : MonoBehaviour {
 
 	public float sensitivityX = 15F;
 	public float sensitivityY = 15F;

@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine;
 
 public class BeerCan : MonoBehaviour {
 
@@ -8,9 +7,11 @@ public class BeerCan : MonoBehaviour {
 	public GameObject[] models;
 	public float respawnTime = 3f;
 	Vector3 startPos;
-	public GameObject prefab;
+	public string prefabName;
 
 	void Start () {
+		wasHit = false;
+
 		startPos = transform.position;
 
 		int randomIndex = Random.Range (0, models.Length);
@@ -27,9 +28,11 @@ public class BeerCan : MonoBehaviour {
 
 			if(respawnTime <= 0f)
             {
-				var newObject = Instantiate(prefab);
-				newObject.transform.position = startPos;
-				Destroy(gameObject);
+				var newObject = Resources.Load<GameObject>(prefabName);
+				var createObj = Instantiate(newObject);
+				createObj.transform.position = startPos;
+				wasHit = false;
+				gameObject.SetActive(false);
             }
         }
     }

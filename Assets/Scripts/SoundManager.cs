@@ -6,7 +6,7 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance;
 
-    AudioSource audioSource;
+    public AudioSource audioSource;
 
     public AudioClip shotSound;
     public AudioClip hitSound;
@@ -15,6 +15,7 @@ public class SoundManager : MonoBehaviour
     {
         Instance = this;
         audioSource = GetComponent<AudioSource>();
+        DontDestroyOnLoad(this);
     }
 
     public void PlayAudio(AudioClip a)

@@ -14,6 +14,10 @@ public class PlayerController : MonoBehaviour {
 
 	float rotationY = 0F;
 
+	public Map map;
+
+	public float rotationSpeed = 10f;
+
 	void FixedUpdate()
 	{
         float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
@@ -32,15 +36,29 @@ public class PlayerController : MonoBehaviour {
 
 			if (Physics.Raycast (transform.position, transform.forward, out hit)) {
 
-				if (hit.transform.GetComponent<BeerCan> () != null) {
+				if (hit.transform.GetComponent<ObjectTarget> () != null) {
 					GameController.Instance.playerScore++;
 
-					hit.transform.GetComponent<BeerCan> ().OnHit (700, transform.forward);
+					hit.transform.GetComponent<ObjectTarget> ().OnHit (700, transform.forward);
 					SoundManager.Instance.PlayAudio(SoundManager.Instance.hitSound);
 				}
 			}
 		}
+		UpdateLogicMap();
 	}
+
+	void UpdateLogicMap()
+    {
+        switch (map)
+        {
+			case Map.Map3:
+                {
+					Transform t = transform.parent;
+					t.eulerAngles += Vector3.up * Time.deltaTime * rotationSpeed;
+					break;
+                }
+        }
+    }
 
     private void Start()
     {

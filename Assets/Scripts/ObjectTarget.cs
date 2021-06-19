@@ -5,14 +5,15 @@ public class ObjectTarget : MonoBehaviour {
 	public bool wasHit = false;
 	public GameObject[] models;
 	public float respawnTime = 3f;
-	Vector3 startPos, startRotation, startScale;
 	public string prefabName;
 	public Map map;
-	Rigidbody Rigidbody;
 
 	public float flyRange = 10f;
 	public float flySpeed = 3f;
 
+
+	Rigidbody Rigidbody;
+	Vector3 startPos, startRotation, startScale;
 	float minRange, maxRange;
 
 
@@ -82,12 +83,6 @@ public class ObjectTarget : MonoBehaviour {
 					}
 
 					break;
-            }
-			case Map.Map3:
-            {
-				
-				
-                break;
             }
         }
     }

@@ -8,12 +8,8 @@ public class UIManager : MonoBehaviour
 {
     PlayerController player;
     GameController gameController;
-    AudioSource audioSource;
     public static UIManager Instance;
-
     public Text recordMap1, recordMap2, recordMap3;
-
-    public int CurrentScene { get { return SceneManager.GetActiveScene().buildIndex; } }
 
     private void Awake()
     {
@@ -74,6 +70,7 @@ public class UIManager : MonoBehaviour
 
     public void NextGame()
     {
+        int CurrentScene = SceneManager.GetActiveScene().buildIndex;
         if (CurrentScene + 1 >= SceneManager.sceneCountInBuildSettings)
         {
             Destroy(SoundManager.Instance.gameObject);

@@ -15,8 +15,8 @@ public class PlayerController : MonoBehaviour {
 	float rotationY = 0F;
 
 	public Map map;
-
 	public float rotationSpeed = 10f;
+
 
 	void FixedUpdate()
 	{
@@ -29,22 +29,30 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update () {
-		if (Input.GetMouseButtonDown(0)) {
+		Shot();
+		UpdateLogicMap();
+	}
+
+	void Shot()
+    {
+		if (Input.GetMouseButtonDown(0))
+		{
 
 			RaycastHit hit;
 			SoundManager.Instance.PlayAudio(SoundManager.Instance.shotSound);
 
-			if (Physics.Raycast (transform.position, transform.forward, out hit)) {
+			if (Physics.Raycast(transform.position, transform.forward, out hit))
+			{
 
-				if (hit.transform.GetComponent<ObjectTarget> () != null) {
+				if (hit.transform.GetComponent<ObjectTarget>() != null)
+				{
 					GameController.Instance.playerScore++;
 
-					hit.transform.GetComponent<ObjectTarget> ().OnHit (700, transform.forward);
+					hit.transform.GetComponent<ObjectTarget>().OnHit(700, transform.forward);
 					SoundManager.Instance.PlayAudio(SoundManager.Instance.hitSound);
 				}
 			}
 		}
-		UpdateLogicMap();
 	}
 
 	void UpdateLogicMap()
